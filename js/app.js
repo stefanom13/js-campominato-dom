@@ -6,12 +6,17 @@ const messageElement = document.querySelector('.message')
 
 let bombs = [];
 let punteggio;
+let arrayCells = []
+let cellCallback
+
 
 
 // salviamo il click nella variabile startgame
 const startGame = () => {
     console.log('inizia il gioco');
-    gridElement.innerHTML = '';
+    gridElement.innerHTML = '';// quando premiamo play si riazzera grid e messagge
+    messageElement.innerHTML = ''; 
+
 
     // impostare la modalità di gioco
     // leggere value select con modalità selezionata da utente
@@ -47,7 +52,7 @@ const startGame = () => {
     // determinare numero totale di celle e bombe da generare
     const cellNumber = rows * columns;
     const cellSIze = `calc( 100% / ${columns})`;
-    bombs = generaBombe (16,1,cellNumber);
+    bombs = generaBombe (16,1,cellNumber);    // 16 numero bombe - 1 numero minimo - cell number = numero max -
     score = 0 ;
     
     
@@ -59,10 +64,15 @@ const startGame = () => {
 
             this.classList.add('bomb')
 
-           gameOver(score,);
+           gameOver(score, arrayCells);
         }else{
+
             this.classList.add('selected')
             score ++ ;
+
+            if (score === cellNumber - bombs.length) {
+                youWin(score, arrayCells);
+            } 
         }
         
             this.removeEventListener('click',cellCallback)
@@ -81,7 +91,10 @@ const startGame = () => {
         cell.append(i + 1);
         cell.classList.add('cell');
         gridElement.appendChild(cell);
-        
+        arrayCells.push(cell)
+
+
+
         cell.addEventListener('click',cellCallback)
 
     }
@@ -91,6 +104,45 @@ const startGame = () => {
 
 buttonPlay.addEventListener('click', startGame)
 
+
+
+
+
+
+function isBomb(numero) {
+
+    if (bombs.includes(numero)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function gameOver(score,arrayCells) {
+
+    messageElement.innerHTML = (`Mi dispiace hai perso totalizzando  ${ score } punti`);
+    removeEventi(arrayCells)
+
+}
+
+function youWin(score,arrayCells) {
+
+    messageElement.innerHTML = (`Complimenti hai vinto con  ${ score } punti`);
+    removeEventi(arrayCells)
+}
+
+function removeEventi(arrayCells) {
+
+    for (let i = 0; i < arrayCells.length; i++) {
+
+        const cell = arrayCells[i];
+        const numero = parseInt(cell.innerHTML)
+
+        cell.removeEventListener('click',cellCallback);
+
+    }
+    
+}
 
 function generaBombe(totBombe,min,max) {
     // do-while per generare 16 bombe e pusharli nell array
@@ -112,17 +164,4 @@ function getRandomIntInclusive(min,max){
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min );
     // generare massimo e minimo
-}
-
-function isBomb(numero) {
-
-    if (bombs.includes(numero)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function gameOver(score) {
-    console.log(`hai totalizzato  ${ score } punti`);
 }
