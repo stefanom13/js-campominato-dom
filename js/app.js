@@ -9,7 +9,6 @@ const startGame = () => {
     console.log('inizia il gioco');
     gridElement.innerHTML = '';
 
-
     // impostare la modalità di gioco
     // leggere value select con modalità selezionata da utente
     const mode = controlsOption.value;
@@ -44,6 +43,12 @@ const startGame = () => {
     const cellSIze = `calc( 100% / ${columns})`;
     console.log(cellNumber);
 
+    function cellCallback() {
+
+        this.classList.add('selected')
+        cell.removeEventListener('click',cellCallback)
+    }
+
     // genero la griglia
     // faccio un ciclo da 1 a tot celle = righe * colonne
     for (let i = 0; i < cellNumber; i++) {
@@ -53,7 +58,8 @@ const startGame = () => {
         cell.append(i + 1);
         cell.classList.add('cell');
         gridElement.appendChild(cell);
-
+        
+        cell.addEventListener('click',cellCallback)
 
     }
 
