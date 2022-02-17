@@ -12,9 +12,10 @@ const startGame = () => {
     // impostare la modalità di gioco
     // leggere value select con modalità selezionata da utente
     const mode = controlsOption.value;
-    let rows, columns, cellSize;
+    let rows, columns, cellSize,bombs;
+   
 
-
+    
     // determinare numero righe e colonne
     switch (mode) {
         case '1':
@@ -38,19 +39,28 @@ const startGame = () => {
             break;
     }
 
-    // determinare numero totale di celle da generare
+    // determinare numero totale di celle e bombe da generare
     const cellNumber = rows * columns;
     const cellSIze = `calc( 100% / ${columns})`;
-    console.log(cellNumber);
+    bombs = generaBombe (16,1,cellNumber);
+
+    
+    
+    
 
     function cellCallback() {
 
         this.classList.add('selected')
-        cell.removeEventListener('click',cellCallback)
+        this.removeEventListener('click',cellCallback)
     }
+
 
     // genero la griglia
     // faccio un ciclo da 1 a tot celle = righe * colonne
+    // aggiungo il contenuto
+    // aggiungo la classe cell
+    // appendere cella dentro griglia
+
     for (let i = 0; i < cellNumber; i++) {
         // genero una cella
         const cell = document.createElement('div');
@@ -64,11 +74,29 @@ const startGame = () => {
     }
 
 
-
-
-    // aggiungo il contenuto
-    // aggiungo la classe cell
-    // appendere cella dentro griglia
 }
 
 buttonPlay.addEventListener('click', startGame)
+
+
+function generaBombe(totBombe,min,max) {
+    // do-while per generare 16 bombe e pusharli nell array
+    const arrayBombe= []
+    do {
+        const numero = getRandomIntInclusive(min, max);
+        if (arrayBombe.includes (numero) === false){    // includes per evitare numeri doppi
+            arrayBombe.push(numero)
+        }
+
+    } while (arrayBombe.length < totBombe);
+    
+    console.log (arrayBombe);
+    return arrayBombe;
+}
+
+function getRandomIntInclusive(min,max){
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min );
+    // generare massimo e minimo
+}
