@@ -43,18 +43,26 @@ const startGame = () => {
     const cellNumber = rows * columns;
     const cellSIze = `calc( 100% / ${columns})`;
     bombs = generaBombe (16,1,cellNumber);
-
+    
     
     
     
 
     function cellCallback() {
 
-        this.classList.add('selected')
-        this.removeEventListener('click',cellCallback)
+        if (isBomb(this.innerHTML,bombs)) {
+
+            this.classList.add('bomb')
+
+            // game-over
+        }else{
+            this.classList.add('selected')
+            
+        }
+        
+            this.removeEventListener('click',cellCallback)
     }
-
-
+    
     // genero la griglia
     // faccio un ciclo da 1 a tot celle = righe * colonne
     // aggiungo il contenuto
@@ -99,4 +107,13 @@ function getRandomIntInclusive(min,max){
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min );
     // generare massimo e minimo
+}
+
+function isBomb(numero, bombs) {
+
+    if (bombs.includes(numero, bombs)) {
+        return true;
+    } else {
+        return false;
+    }
 }

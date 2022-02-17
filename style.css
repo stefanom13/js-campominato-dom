@@ -71,3 +71,19 @@ footer {
   justify-content: flex-start;
   padding: 20px;
 }
+
+.cuore{
+  padding: 0px 5px;
+}
+.click_game{
+  color: red;
+}
+
+.click_game:hover{
+  color: green;
+  
+}
+
+.bomb{
+  background-color: crimson;
+}
