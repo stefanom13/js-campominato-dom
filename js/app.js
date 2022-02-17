@@ -1,7 +1,11 @@
 const buttonPlay = document.getElementById('buttonPlay')
 const controlsOption = document.getElementById('mode')
 const gridElement = document.querySelector('.grid')
-let bombs = []
+const messageElement = document.querySelector('.message')
+
+
+let bombs = [];
+let punteggio;
 
 
 // salviamo il click nella variabile startgame
@@ -13,6 +17,7 @@ const startGame = () => {
     // leggere value select con modalità selezionata da utente
     const mode = controlsOption.value;
     let rows, columns, cellSize;
+    score = punteggio;
    
 
     
@@ -43,7 +48,7 @@ const startGame = () => {
     const cellNumber = rows * columns;
     const cellSIze = `calc( 100% / ${columns})`;
     bombs = generaBombe (16,1,cellNumber);
-    
+    score = 0 ;
     
     
     
@@ -54,10 +59,10 @@ const startGame = () => {
 
             this.classList.add('bomb')
 
-            // game-over
+           gameOver(score,);
         }else{
             this.classList.add('selected')
-            
+            score ++ ;
         }
         
             this.removeEventListener('click',cellCallback)
@@ -116,4 +121,8 @@ function isBomb(numero) {
     } else {
         return false;
     }
+}
+
+function gameOver(score) {
+    console.log(`hai totalizzato  ${ score } punti`);
 }
