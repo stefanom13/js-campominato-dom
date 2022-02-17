@@ -1,7 +1,7 @@
 const buttonPlay = document.getElementById('buttonPlay')
 const controlsOption = document.getElementById('mode')
 const gridElement = document.querySelector('.grid')
-
+let bombs = []
 
 
 // salviamo il click nella variabile startgame
@@ -12,7 +12,7 @@ const startGame = () => {
     // impostare la modalità di gioco
     // leggere value select con modalità selezionata da utente
     const mode = controlsOption.value;
-    let rows, columns, cellSize,bombs;
+    let rows, columns, cellSize;
    
 
     
@@ -49,8 +49,8 @@ const startGame = () => {
     
 
     function cellCallback() {
-
-        if (isBomb(this.innerHTML,bombs)) {
+        const number = parseInt(this.innerHTML)
+        if (isBomb(number)) {
 
             this.classList.add('bomb')
 
@@ -92,7 +92,7 @@ function generaBombe(totBombe,min,max) {
     const arrayBombe= []
     do {
         const numero = getRandomIntInclusive(min, max);
-        if (arrayBombe.includes (numero) === false){    // includes per evitare numeri doppi
+        if (arrayBombe.includes(numero) === false){    // includes per evitare numeri doppi
             arrayBombe.push(numero)
         }
 
@@ -109,9 +109,9 @@ function getRandomIntInclusive(min,max){
     // generare massimo e minimo
 }
 
-function isBomb(numero, bombs) {
+function isBomb(numero) {
 
-    if (bombs.includes(numero, bombs)) {
+    if (bombs.includes(numero)) {
         return true;
     } else {
         return false;
