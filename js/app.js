@@ -7,7 +7,6 @@ const messageElement = document.querySelector('.message')
 let bombs = [];
 let punteggio;
 let arrayCells = []
-let cellCallback
 
 
 
@@ -58,25 +57,7 @@ const startGame = () => {
     
     
 
-    function cellCallback() {
-        const number = parseInt(this.innerHTML)
-        if (isBomb(number)) {
-
-            this.classList.add('bomb')
-
-           gameOver(score, arrayCells);
-        }else{
-
-            this.classList.add('selected')
-            score ++ ;
-
-            if (score === cellNumber - bombs.length) {
-                youWin(score, arrayCells);
-            } 
-        }
-        
-            this.removeEventListener('click',cellCallback)
-    }
+   
     
     // genero la griglia
     // faccio un ciclo da 1 a tot celle = righe * colonne
@@ -96,11 +77,12 @@ const startGame = () => {
 
 
         cell.addEventListener('click',cellCallback)
-
-    }
-
-
+ 
+    } 
+  
 }
+
+
 
 buttonPlay.addEventListener('click', startGame)
 
@@ -128,20 +110,40 @@ function gameOver(score,arrayCells) {
 function youWin(score,arrayCells) {
 
     messageElement.innerHTML = (`Complimenti hai vinto con  ${ score } punti`);
-    removeEventi(arrayCells)
+    removeEventi(cell)
 }
 
-function removeEventi(arrayCells) {
+function removeEventi() {
+    let cells = document.getElementsByClassName('cell')
 
-    for (let i = 0; i < arrayCells.length; i++) {
+    for (let i = 0; i < cells.length; i++) {
 
-        const cell = arrayCells[i];
-        const numero = parseInt(cell.innerHTML)
+        const cell = cells[i];
 
         cell.removeEventListener('click',cellCallback);
 
     }
+
+
+}
+
+function cellCallback() {
+    const number = parseInt(this.innerHTML)
+    if (isBomb(number)) {
+
+        this.classList.add('bomb')
+
+       gameOver(score, arrayCells);
+       removeEventi(arrayCells)
+    }else{
+
+        this.classList.add('selected')
+        score ++ ;
+
+      
+    }
     
+        this.removeEventListener('click',cellCallback)
 }
 
 function generaBombe(totBombe,min,max) {
@@ -165,3 +167,5 @@ function getRandomIntInclusive(min,max){
     return Math.floor(Math.random() * (max - min + 1) + min );
     // generare massimo e minimo
 }
+
+
